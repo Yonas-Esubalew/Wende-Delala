@@ -5,3 +5,8 @@ export async function fetchListings({ queryKey }) {
   const response = await apiClient.get('/listings', { params: filters })
   return response.data
 }
+
+export async function fetchListingCategoryCounts() {
+  const response = await apiClient.get('/listings/counts')
+  return response.data
+}

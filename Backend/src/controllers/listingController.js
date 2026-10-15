@@ -72,6 +72,32 @@ export async function getListings(req, res, next) {
   }
 }
 
+export async function getListingCategoryCounts(req, res, next) {
+  try {
+    if (req.app.locals.databaseConnected) {
+      const counts = await Listing.aggregate([
+        { $match: { status: 'active' } },
+        { $group: { _id: '$category', count: { $sum: 1 } } },
+      ])
+      return res.json({
+        success: true,
+        data: counts.reduce((result, item) => {
+          result[item._id] = item.count
+          return result
+        }, {}),
+      })
+    }
+
+    const counts = seedListings.reduce((result, item) => {
+      result[item.category] = (result[item.category] || 0) + 1
+      return result
+    }, {})
+    return res.json({ success: true, data: counts })
+  } catch (error) {
+    return next(error)
+  }
+}
+
 export async function getListingById(req, res, next) {
   try {
     if (req.app.locals.databaseConnected) {

@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useQuery } from '@tanstack/react-query'
-import { fetchListings } from './api/listings'
+import { fetchListingCategoryCounts, fetchListings } from './api/listings'
 import AccountActions from './components/AccountActions'
 import SiteFooter from './components/SiteFooter'
 import Seo from './components/Seo'
@@ -13,12 +13,12 @@ import { CONTACT_PHONE, CONTACT_TELEGRAM } from './data/contact'
 import './App.css'
 
 const categories = [
-  { key: 'cars', count: '1,240', tone: 'mint' },
-  { key: 'property', count: '860', tone: 'sand' },
-  { key: 'electronics', count: '2,450', tone: 'sky' },
-  { key: 'phones', count: '1,890', tone: 'peach' },
-  { key: 'furniture', count: '730', tone: 'lavender' },
-  { key: 'services', count: '540', tone: 'yellow' },
+  { key: 'cars', tone: 'mint' },
+  { key: 'property', tone: 'sand' },
+  { key: 'electronics', tone: 'sky' },
+  { key: 'phones', tone: 'peach' },
+  { key: 'furniture', tone: 'lavender' },
+  { key: 'services', tone: 'yellow' },
 ]
 
 function CategoryIcon({ name }) {
@@ -110,6 +110,7 @@ function App() {
     const [city, setCity] = useState('Addis Ababa')
   const [listingView, setListingView] = useState('grid')
   const { data: homeData } = useQuery({ queryKey: ['home-listings', { limit: 24, sort: 'newest' }], queryFn: fetchListings, staleTime: 30_000 })
+  const { data: categoryCounts } = useQuery({ queryKey: ['listing-category-counts'], queryFn: fetchListingCategoryCounts, staleTime: 60_000, refetchOnWindowFocus: false })
 
   const toggleFavorite = (id) => {
     if (!requireAuthenticatedSession(navigate, `${routeLocation.pathname}${routeLocation.search}${routeLocation.hash}`)) return
@@ -206,7 +207,7 @@ function App() {
         <section className="content-section" id="discover">
           <div className="section-heading"><div><p className="section-kicker">{t('browseBy')}</p><h2>{t('whatAreYouLookingFor')}</h2></div><Link to="/listings" className="text-link">{t('seeAll')} <span>↗</span></Link></div>
           <div className="category-grid">
-            {categories.map((category) => <button className={`category-card ${category.tone}`} key={category.key} onClick={() => setActiveTab(category.key)} type="button"><span className="category-icon"><CategoryIcon name={category.key} /></span><span className="category-name">{t(`categories.${category.key}`)}</span><small>{category.count} {t('ads')}</small></button>)}
+            {categories.map((category) => <button className={`category-card ${category.tone}`} key={category.key} onClick={() => setActiveTab(category.key)} type="button"><span className="category-icon"><CategoryIcon name={category.key} /></span><span className="category-name">{t(`categories.${category.key}`)}</span><small>{categoryCounts?.data?.[category.key] == null ? '—' : new Intl.NumberFormat(i18n.language === 'am' ? 'am-ET' : 'en-US').format(categoryCounts.data[category.key])} {t('ads')}</small></button>)}
           </div>
         </section>
 
