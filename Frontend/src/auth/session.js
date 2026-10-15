@@ -33,6 +33,7 @@ export function isAdminSession() {
 
 export function requireAuthenticatedSession(navigate, returnTo) {
   if (hasAuthenticatedSession()) return true
+  try { sessionStorage.setItem('delala-pending-toast', JSON.stringify({ key: 'loginToContinue', type: 'info' })) } catch { /* keep navigation working when storage is unavailable */ }
   navigate('/auth', { state: { from: returnTo } })
   return false
 }

@@ -3,9 +3,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { logoutUser } from '../api/auth'
 import { clearCurrentUser, getCurrentUser } from '../auth/session'
+import { useToast } from './ToastProvider'
 
 export default function AccountActions() {
   const { t } = useTranslation()
+  const showToast = useToast()
   const navigate = useNavigate()
   const [user, setUser] = useState(getCurrentUser)
   const [open, setOpen] = useState(false)
@@ -37,10 +39,12 @@ export default function AccountActions() {
   const isAdmin = user.role === 'admin'
   const initial = user.fullName?.trim().split(/\s+/)[0]?.charAt(0).toLocaleUpperCase() || (isAdmin ? 'Y' : 'U')
   const signOut = async () => {
-    try { await logoutUser() } catch { /* clear the local profile even if the network is unavailable */ }
+    let serverLogout = true
+    try { await logoutUser() } catch { serverLogout = false }
     clearCurrentUser()
     setUser(null)
     setOpen(false)
+    showToast(t(serverLogout ? 'logoutSuccess' : 'logoutLocalSuccess'), 'success')
     navigate('/', { replace: true })
   }
 

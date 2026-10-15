@@ -1,5 +1,7 @@
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, useContext, useEffect, useMemo, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { getCurrentUser } from '../auth/session'
+import { useToast } from '../components/ToastProvider'
 
 const FavoritesContext = createContext(null)
 
@@ -17,13 +19,23 @@ function readFavorites(userKey) {
 }
 
 export function FavoritesProvider({ children }) {
+  const { t } = useTranslation()
+  const showToast = useToast()
+  const storageWarningShown = useRef(false)
   const [userKey, setUserKey] = useState(getUserKey)
   const [favorites, setFavorites] = useState(() => readFavorites(getUserKey()))
   const storageKey = `delala-favorites:${userKey}`
 
   useEffect(() => {
-    localStorage.setItem(storageKey, JSON.stringify(favorites))
-  }, [favorites, storageKey])
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(favorites))
+    } catch {
+      if (!storageWarningShown.current) {
+        storageWarningShown.current = true
+        showToast(t('storageUnavailable'), 'error')
+      }
+    }
+  }, [favorites, storageKey, showToast, t])
 
   useEffect(() => {
     const refreshUserFavorites = () => {
@@ -48,12 +60,17 @@ export function FavoritesProvider({ children }) {
     isFavorite: (id) => favorites.includes(String(id)),
     toggleFavorite: (id) => {
       const idKey = String(id)
+      const removing = favorites.includes(idKey)
       setFavorites((current) => current.includes(idKey)
         ? current.filter((savedId) => savedId !== idKey)
         : [...current, idKey])
+      showToast(t(removing ? 'favoriteRemoved' : 'favoriteAdded'), 'success')
     },
-    removeFavorite: (id) => setFavorites((current) => current.filter((savedId) => savedId !== String(id))),
-  }), [favorites])
+    removeFavorite: (id) => {
+      setFavorites((current) => current.filter((savedId) => savedId !== String(id)))
+      showToast(t('favoriteRemoved'), 'success')
+    },
+  }), [favorites, showToast, t])
 
   return <FavoritesContext.Provider value={value}>{children}</FavoritesContext.Provider>
 }

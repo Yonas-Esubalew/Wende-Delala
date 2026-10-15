@@ -1,12 +1,14 @@
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CONTACT_TELEGRAM } from '../data/contact'
+import { useToast } from './ToastProvider'
 import '../App.css'
 
 const initialForm = { fullName: '', title: '', description: '', price: '', category: 'cars', location: 'Addis Ababa', phone: '', condition: 'used', extra: '', year: '', mileage: '', transmission: 'automatic', fuel: 'petrol', bodyType: 'SUV', listingType: 'sale', propertyType: 'apartment', bedrooms: '', bathrooms: '', area: '' }
 
 export default function PublicListingModal({ open, onClose }) {
   const { t } = useTranslation()
+  const showToast = useToast()
   const [form, setForm] = useState(initialForm)
   const [images, setImages] = useState([])
   const [previews, setPreviews] = useState([])
@@ -30,6 +32,18 @@ export default function PublicListingModal({ open, onClose }) {
   }
   const submit = async (event) => {
     event.preventDefault()
+    if (![form.fullName, form.title, form.description, form.location, form.phone].every((value) => String(value).trim())) {
+      showToast(t('completeRequiredFields'), 'error')
+      return
+    }
+    if (!Number.isFinite(Number(form.price)) || Number(form.price) <= 0) {
+      showToast(t('invalidPrice'), 'error')
+      return
+    }
+    if (!images.length) {
+      showToast(t('imagesRequired'), 'error')
+      return
+    }
     setSharing(true)
     const carDetails = form.category === 'cars'
       ? [[t('listingType'), t(form.listingType === 'rent' ? 'forRent' : 'forSale')], [t('modelYear'), form.year], [t('mileage'), form.mileage ? `${form.mileage} km` : ''], [t('transmission'), t(form.transmission)], [t('fuel'), t(form.fuel)], [t('bodyType'), form.bodyType]].filter(([, value]) => value).map(([label, value]) => `${label}: ${value}`)
@@ -55,11 +69,16 @@ export default function PublicListingModal({ open, onClose }) {
     try {
       if (images.length && navigator.share && navigator.canShare?.({ files: images })) {
         await navigator.share({ title: t('sendProductToDelala'), text: message, files: images })
+        showToast(t('telegramRequestReady'), 'info')
       } else {
         window.location.assign(`${CONTACT_TELEGRAM}?text=${encodeURIComponent(message)}`)
+        showToast(t('telegramRequestReady'), 'info')
       }
     } catch (error) {
-      if (error.name !== 'AbortError') window.location.assign(`${CONTACT_TELEGRAM}?text=${encodeURIComponent(message)}`)
+      if (error.name !== 'AbortError') {
+        showToast(t('requestFailed'), 'error')
+        window.location.assign(`${CONTACT_TELEGRAM}?text=${encodeURIComponent(message)}`)
+      }
     } finally {
       setSharing(false)
     }

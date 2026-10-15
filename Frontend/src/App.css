@@ -250,6 +250,49 @@ button { border: 0; cursor: pointer; }
 	.footer-links { gap: 12px; }
 }
 
+.toast-stack {
+	width: min(440px, calc(100vw - 28px));
+	display: grid;
+	gap: 9px;
+	position: fixed;
+	top: max(14px, env(safe-area-inset-top));
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 120;
+	pointer-events: none;
+}
+.app-toast {
+	min-height: 58px;
+	padding: 12px 13px;
+	display: flex;
+	align-items: center;
+	gap: 11px;
+	border: 1px solid #d9e7df;
+	border-radius: 12px;
+	color: #173c34;
+	background: #fff;
+	box-shadow: 0 14px 36px rgba(13, 44, 38, .18);
+	pointer-events: auto;
+	animation: toast-in .22s ease-out both;
+}
+.app-toast p { flex: 1; margin: 0; font-size: 13px; font-weight: 650; line-height: 1.45; }
+.toast-symbol { width: 28px; height: 28px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 50%; color: #fff; background: #087f70; font-size: 15px; font-weight: 800; }
+.app-toast > button { width: 32px; height: 32px; flex: 0 0 auto; border-radius: 8px; color: #738078; background: transparent; font-size: 22px; line-height: 1; }
+.app-toast > button:hover { color: #173c34; background: #f0f4f1; }
+.toast-error { border-color: #f1d2cb; color: #642d25; background: #fffaf8; }
+.toast-error .toast-symbol { background: #bc5547; }
+.toast-success { border-color: #d0e7d8; background: #f9fdf9; }
+.toast-info .toast-symbol { background: #376e9e; }
+@keyframes toast-in { from { opacity: 0; transform: translateY(-8px); } to { opacity: 1; transform: translateY(0); } }
+.toast-confirm-backdrop { padding: 18px; display: grid; place-items: center; position: fixed; inset: 0; z-index: 115; background: rgba(11, 27, 23, .42); }
+.toast-confirm-dialog { width: min(380px, 100%); padding: 22px; border: 1px solid var(--line); border-radius: 14px; background: #fff; box-shadow: 0 24px 70px rgba(9, 33, 29, .24); }
+.toast-confirm-dialog h2 { margin: 0 0 8px; color: var(--ink); font-size: 18px; }
+.toast-confirm-dialog p { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+.toast-confirm-actions { display: flex; justify-content: end; gap: 9px; margin-top: 22px; }
+.toast-confirm-actions button { min-height: 42px; padding: 0 16px; border: 1px solid var(--line); border-radius: 7px; color: #4e5e55; background: #fff; font-size: 12px; font-weight: 750; }
+.toast-confirm-actions .confirm-delete { border-color: #a94438; color: #fff; background: #a94438; }
+@media (max-width: 560px) { .app-toast { min-height: 56px; padding: 10px; gap: 9px; }.app-toast p { font-size: 12px; }.toast-confirm-dialog { padding: 19px; } }
+
 :root {
 	--ink: #202a28;
 	--muted: #73817d;
