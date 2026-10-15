@@ -12,13 +12,26 @@ import { CONTACT_PHONE, CONTACT_TELEGRAM } from './data/contact'
 import './App.css'
 
 const categories = [
-  { key: 'cars', icon: 'ðŸš™', count: '1,240', tone: 'mint' },
-  { key: 'property', icon: '⌂', count: '860', tone: 'sand' },
-  { key: 'electronics', icon: '⌁', count: '2,450', tone: 'sky' },
-  { key: 'phones', icon: '▣', count: '1,890', tone: 'peach' },
-  { key: 'furniture', icon: '▰', count: '730', tone: 'lavender' },
-  { key: 'services', icon: '✦', count: '540', tone: 'yellow' },
+  { key: 'cars', count: '1,240', tone: 'mint' },
+  { key: 'property', count: '860', tone: 'sand' },
+  { key: 'electronics', count: '2,450', tone: 'sky' },
+  { key: 'phones', count: '1,890', tone: 'peach' },
+  { key: 'furniture', count: '730', tone: 'lavender' },
+  { key: 'services', count: '540', tone: 'yellow' },
 ]
+
+function CategoryIcon({ name }) {
+  const paths = {
+    cars: <><path d="M3 14.5 5 9.5a2 2 0 0 1 1.8-1.2h10.4A2 2 0 0 1 19 9.5l2 5v3h-2v-2H5v2H3z" /><path d="M5 12h14M7 8.5l1.2 3.5m8.8-3.5-1.2 3.5" /><circle cx="7" cy="16" r="1.5" /><circle cx="17" cy="16" r="1.5" /></>,
+    property: <><path d="m3 11 9-7 9 7" /><path d="M5 10v10h14V10M9 20v-6h6v6" /></>,
+    electronics: <><rect x="3.5" y="4.5" width="17" height="12" rx="1.8" /><path d="M8 20h8m-4-3.5V20" /><path d="M7.5 8.5h9" /></>,
+    phones: <><rect x="7" y="2.8" width="10" height="18.4" rx="2" /><path d="M10 5.5h4M11 18.2h2" /></>,
+    furniture: <><path d="M5 11V8a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v3" /><path d="M4 11h16a1 1 0 0 1 1 1v5H3v-5a1 1 0 0 1 1-1Zm1 6v3m14-3v3" /><path d="M5 14h14" /></>,
+    services: <><path d="m12 2 1.8 6.2L20 10l-6.2 1.8L12 18l-1.8-6.2L4 10l6.2-1.8L12 2Z" /><path d="m19 16 .8 2.2L22 19l-2.2.8L19 22l-.8-2.2L16 19l2.2-.8L19 16Z" /></>,
+  }
+
+  return <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{paths[name]}</svg>
+}
 
 const listings = [
   {
@@ -191,7 +204,7 @@ function App() {
         <section className="content-section" id="discover">
           <div className="section-heading"><div><p className="section-kicker">{t('browseBy')}</p><h2>{t('whatAreYouLookingFor')}</h2></div><Link to="/listings" className="text-link">{t('seeAll')} <span>↗</span></Link></div>
           <div className="category-grid">
-            {categories.map((category) => <button className={`category-card ${category.tone}`} key={category.key} onClick={() => setActiveTab(category.key)} type="button"><span className="category-icon">{category.icon}</span><span className="category-name">{t(`categories.${category.key}`)}</span><small>{category.count} {t('ads')}</small></button>)}
+            {categories.map((category) => <button className={`category-card ${category.tone}`} key={category.key} onClick={() => setActiveTab(category.key)} type="button"><span className="category-icon"><CategoryIcon name={category.key} /></span><span className="category-name">{t(`categories.${category.key}`)}</span><small>{category.count} {t('ads')}</small></button>)}
           </div>
         </section>
 
