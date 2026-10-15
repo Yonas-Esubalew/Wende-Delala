@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/v1/:path*",
-      "destination": "https://wende-delala-api.onrender.com/api/v1/:path*"
+      "destination": "https://wende-delala-1.onrender.com/api/v1/:path*"
     },
     {
       "source": "/(.*)",
