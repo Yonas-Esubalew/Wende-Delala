@@ -259,6 +259,6 @@ export const seedListings = [
   {
     title: 'Two-bedroom apartment for rent in Bole Rwanda', price: 52000, location: 'Bole Rwanda, Addis Ababa', category: 'property', image: 'https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&w=900&q=80', phone: '+251922000068', description: 'Two-bedroom apartment in a well-connected area, with a separate living room and balcony. Contact the owner to confirm availability, lease conditions, service charges, and viewing times.', attributes: { listingType: 'rent', propertyType: 'Apartment', bedrooms: 2, bathrooms: 2, area: 115 }, highlights: ['2 bedrooms, 2 bathrooms', 'Approx. 115 m²', 'Balcony and separate living room', 'Service charges to confirm', 'Bole Rwanda, Addis Ababa']
   }
-]
+].slice(0, 50)
   }
 ]
