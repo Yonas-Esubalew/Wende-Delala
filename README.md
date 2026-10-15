@@ -30,8 +30,8 @@ The API health check is available at `http://localhost:5000/api/v1/health`.
 This repository includes `render.yaml` for the API and `Frontend/vercel.json` for the Vite site and same-origin API proxy.
 
 1. Import this GitHub repository into Vercel and set the Root Directory to `Frontend`. Use the Vite defaults: build command `npm run build` and output directory `dist`. The `/api/v1` proxy points to `https://wende-delala-api.onrender.com`.
-2. Create a Render Blueprint from the repository root. Render reads `render.yaml`; the API service uses `Backend`, `npm ci`, `npm start`, and `/api/v1/health`.
+2. Create a Render Blueprint from the repository root. Render reads `render.yaml`; the API service uses Root Directory `Backend`, Build Command `npm ci`, Start Command `npm start`, and health check `/api/v1/health`. If creating a Render Web Service manually, enter those same values. Do not set `npm run seed:admin` as the Start Command: Render runs that command every time it starts the service, and it will not start the API.
 3. Set the Render `MONGODB_URI` to a MongoDB Atlas connection string, `CLIENT_URL` to the Vercel production URL, and provide `ADMIN_EMAIL` plus a unique `ADMIN_PASSWORD` of at least 12 characters. Render generates `JWT_SECRET`.
-4. Run `npm run seed:admin` once from the Render Shell to create the admin account. If using a custom Vercel domain later, update Render's `CLIENT_URL` to that domain.
+4. After the API deploys, run the one-time admin seed from the Render Shell. If the shell opens in the `Backend` directory, run `npm run seed:admin`. If it opens at the repository root, run `cd Backend && npm run seed:admin`. If using a custom Vercel domain later, update Render's `CLIENT_URL` to that domain.
 
 The backend stores uploaded listing images in MongoDB GridFS, so uploads do not depend on Render's ephemeral local filesystem. Do not set `VITE_API_URL` in Vercel unless you also change the proxy setup.
