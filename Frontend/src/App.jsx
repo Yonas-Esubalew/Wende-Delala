@@ -196,7 +196,6 @@ function App() {
             </div>
             <div className="hero-sparkle sparkle-one">✦</div><div className="hero-sparkle sparkle-two">✧</div>
           </div>
-          <a className="hero-photo-credit" href="https://ethionegari.com/2025/09/02/cbe-unveils-50-billion-birr-diaspora-loan/" target="_blank" rel="noreferrer">{t('heroImageCredit')}</a>
         </section>
 
         <section className="service-choices content-section" aria-label={t('waysToTrade')}>
