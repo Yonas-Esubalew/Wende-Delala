@@ -1,0 +1,25 @@
+:root {
+  font: 16px/1.5 'Noto Sans Ethiopic', 'Inter', sans-serif;
+  color: #1f2d26;
+  background: #f7f8f3;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --ink: #20352b;
+  --muted: #78817a;
+  --green: #216b4a;
+  --green-dark: #164935;
+  --lime: #d7e64e;
+  --cream: #f4f2e8;
+  --line: #e3e7df;
+  --paper: #fff;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+#root {
+  min-height: 100svh;
+}
