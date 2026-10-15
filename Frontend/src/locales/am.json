@@ -335,5 +335,12 @@
   "material": "የተሠራበት ቁሳቁስ",
   "dimensions": "ልኬቶች",
   "serviceArea": "የአገልግሎት አካባቢ",
-  "availability": "የሚገኝበት ጊዜ"
+  "availability": "የሚገኝበት ጊዜ",
+  "showPassword": "የይለፍ ቃሉን አሳይ",
+  "hidePassword": "የይለፍ ቃሉን ደብቅ",
+  "confirmPassword": "የይለፍ ቃሉን ያረጋግጡ",
+  "confirmPasswordPlaceholder": "የይለፍ ቃሉን እንደገና ያስገቡ",
+  "passwordMismatch": "ያስገቡት የይለፍ ቃሎች አይዛመዱም።",
+  "imNotRobot": "ሮቦት አይደለሁም",
+  "robotRequired": "ከመቀጠልዎ በፊት “ሮቦት አይደለሁም” የሚለውን ይምረጡ።"
 }

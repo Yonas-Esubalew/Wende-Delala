@@ -384,5 +384,12 @@
   "material": "Material",
   "dimensions": "Dimensions",
   "serviceArea": "Service area",
-  "availability": "Availability"
+  "availability": "Availability",
+  "showPassword": "Show password",
+  "hidePassword": "Hide password",
+  "confirmPassword": "Confirm password",
+  "confirmPasswordPlaceholder": "Enter your password again",
+  "passwordMismatch": "Your passwords do not match.",
+  "imNotRobot": "I'm not a robot",
+  "robotRequired": "Please check “I'm not a robot” before continuing."
 }
