@@ -540,3 +540,116 @@ button { border: 0; cursor: pointer; }
 .favorites-empty .details-button, .empty-favorites-link { max-width: 250px; margin: 18px auto 0; }
 @media (max-width: 760px) { .favorites-main { width: min(100% - 32px, 620px); padding: 32px 0 55px; }.favorites-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }.favorites-toolbar { grid-template-columns: 1fr; }.favorites-heading { align-items: center; } }
 @media (max-width: 460px) { .favorites-grid { grid-template-columns: 1fr; }.favorites-heading { align-items: start; }.favorites-count { min-width: 72px; padding: 9px 12px; } }
+
+/* Keep the marketplace controls comfortable and readable on phones. */
+@media (max-width: 560px) {
+	.catalog-main {
+		padding: 24px 14px calc(104px + env(safe-area-inset-bottom));
+	}
+	.catalog-top {
+		margin-bottom: 12px;
+	}
+	.catalog-toolbar {
+		gap: 8px;
+		margin: 0 0 16px;
+	}
+	.catalog-search {
+		min-width: 0;
+		min-height: 48px;
+		gap: 7px;
+		padding-inline: 10px;
+	}
+	.catalog-search span {
+		flex: 0 0 auto;
+		font-size: 20px;
+	}
+	.catalog-search input {
+		min-width: 0;
+		font-size: 12px;
+	}
+	.catalog-toolbar select {
+		width: 112px;
+		min-height: 48px;
+		padding-inline: 9px;
+		font-size: 11px;
+	}
+	.catalog-layout {
+		gap: 0;
+	}
+	.trade-tabs {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 8px;
+		margin-bottom: 14px;
+	}
+	.trade-tabs .filter-tab {
+		min-width: 0;
+		min-height: 42px;
+		padding: 8px 10px;
+		font-size: 11px;
+		white-space: normal;
+	}
+	.catalog-mobile-filter {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: 7px;
+		margin-bottom: 13px;
+		overflow: visible;
+	}
+	.catalog-mobile-filter > span {
+		grid-column: 1 / -1;
+		margin: 0 0 1px;
+		font-size: 11px;
+	}
+	.catalog-mobile-filter button {
+		min-width: 0;
+		min-height: 40px;
+		padding: 7px 5px;
+		font-size: 10px;
+		line-height: 1.2;
+		white-space: normal;
+	}
+	.catalog-results .listing-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: 10px;
+	}
+	.catalog-results .listing-card {
+		border-radius: 12px;
+	}
+	.catalog-results .listing-image-wrap {
+		height: auto;
+		aspect-ratio: 1.08 / 1;
+	}
+	.catalog-results .listing-card-body {
+		padding: 11px 10px 12px;
+	}
+	.catalog-results .listing-card h3 {
+		height: 42px;
+		margin: 8px 0 7px;
+		font-size: 11px;
+		line-height: 1.45;
+	}
+	.catalog-results .listing-price {
+		font-size: 14px;
+	}
+	.catalog-results .listing-location {
+		font-size: 9px;
+	}
+	.catalog-results .details-button,
+	.catalog-results .call-seller-button {
+		min-height: 40px;
+		font-size: 10px;
+	}
+	.mobile-nav {
+		position: fixed;
+		left: 0;
+		right: 0;
+		bottom: 0;
+		z-index: 60;
+		height: calc(66px + env(safe-area-inset-bottom));
+		padding: 7px 16px calc(7px + env(safe-area-inset-bottom));
+		box-sizing: border-box;
+		background: rgba(255, 255, 255, .98);
+		backdrop-filter: blur(12px);
+	}
+}
