@@ -8,7 +8,7 @@ export async function createAdminListing(payload) {
 export async function uploadAdminImages(files) {
   const formData = new FormData()
   files.forEach((file) => formData.append('images', file))
-  const response = await apiClient.post('/admin/uploads', formData)
+  const response = await apiClient.post('/admin/uploads', formData, { timeout: 90_000 })
   const apiUrl = new URL(apiClient.defaults.baseURL, window.location.origin)
   return response.data.data.images.map((image) => new URL(image, `${apiUrl.origin}/`).toString())
 }

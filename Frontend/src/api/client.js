@@ -10,5 +10,6 @@ const apiBaseURL = import.meta.env.PROD
 export const apiClient = axios.create({
   baseURL: apiBaseURL,
   withCredentials: true,
-  timeout: 8000,
+  // Render's free instance may need time to wake; image processing also takes longer.
+  timeout: 60_000,
 })
