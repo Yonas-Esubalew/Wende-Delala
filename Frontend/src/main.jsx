@@ -16,6 +16,7 @@ import FavoritesPage from './pages/FavoritesPage.jsx'
 import Seo from './components/Seo.jsx'
 import { FavoritesProvider } from './favorites/FavoritesContext.jsx'
 import { ToastProvider } from './components/ToastProvider.jsx'
+import { ImageViewerProvider } from './components/ImageViewer.jsx'
 
 const queryClient = new QueryClient()
 
@@ -23,7 +24,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <ToastProvider><BrowserRouter>
+        <ToastProvider><BrowserRouter><ImageViewerProvider>
         <FavoritesProvider><Routes>
           <Route path="/" element={<App />} />
           <Route path="/listings" element={<ListingsPage />} />
@@ -37,7 +38,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/vision" element={<><Seo page="vision" /><InformationPage pageKey="vision" /></>} />
           <Route path="/opportunities" element={<><Seo page="opportunities" /><InformationPage pageKey="opportunities" /></>} />
         </Routes></FavoritesProvider>
-        </BrowserRouter></ToastProvider>
+        </ImageViewerProvider></BrowserRouter></ToastProvider>
       </QueryClientProvider>
     </HelmetProvider>
   </StrictMode>,

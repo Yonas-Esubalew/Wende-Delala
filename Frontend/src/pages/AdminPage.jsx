@@ -10,7 +10,7 @@ import { useToast } from '../components/ToastProvider'
 import SiteFooter from '../components/SiteFooter'
 import '../App.css'
 
-const initialForm = { title: '', description: '', price: '', category: 'cars', location: 'Bole, Addis Ababa', phone: '', condition: 'used', promotionTier: 'standard', priority: '0', year: '', mileage: '', transmission: 'automatic', fuel: 'petrol', bodyType: 'SUV', listingType: 'sale', propertyType: 'apartment', bedrooms: '', bathrooms: '', area: '' }
+const initialForm = { title: '', description: '', price: '', category: 'cars', location: 'Bole, Addis Ababa', phone: '', condition: 'used', promotionTier: 'standard', priority: '0', year: '', mileage: '', transmission: 'automatic', fuel: 'petrol', bodyType: 'SUV', listingType: 'sale', propertyType: 'apartment', bedrooms: '', bathrooms: '', area: '', brand: '', model: '', storage: '', warranty: '', material: '', dimensions: '', serviceArea: '', availability: '' }
 
 function AdminPage() {
   const { t, i18n } = useTranslation()
@@ -107,14 +107,30 @@ function AdminPage() {
       if (images.length) imagesForListing = await uploadAdminImages(images)
       if (!imagesForListing.length) throw new Error(t('imagesRequired'))
       const attributes = form.category === 'cars'
-      ? { year: form.year, mileage: form.mileage, transmission: form.transmission, fuel: form.fuel, bodyType: form.bodyType, listingType: form.listingType }
+        ? { year: form.year, mileage: form.mileage, transmission: form.transmission, fuel: form.fuel, bodyType: form.bodyType, listingType: form.listingType }
         : form.category === 'property'
           ? { listingType: form.listingType, propertyType: form.propertyType, bedrooms: form.bedrooms, bathrooms: form.bathrooms, area: form.area }
-          : {}
+          : form.category === 'phones'
+            ? { brand: form.brand, model: form.model, storage: form.storage, warranty: form.warranty }
+            : form.category === 'electronics'
+              ? { brand: form.brand, model: form.model, warranty: form.warranty }
+              : form.category === 'furniture'
+                ? { material: form.material, dimensions: form.dimensions }
+                : form.category === 'services'
+                  ? { serviceArea: form.serviceArea, availability: form.availability }
+                  : {}
       const bulletLines = form.description.split('\n').map((line) => line.replace(/^\s*\d+[.)-]?\s*/, '').trim()).filter(Boolean)
       const attributeLines = form.category === 'cars'
         ? [[t('modelYear'), form.year], [t('mileage'), form.mileage ? `${form.mileage} km` : ''], [t('transmission'), t(form.transmission)], [t('fuel'), t(form.fuel)], [t('bodyType'), form.bodyType]]
-        : []
+        : form.category === 'property'
+          ? [[t('propertyType'), t(form.propertyType)], [t('bedrooms'), form.bedrooms], [t('bathrooms'), form.bathrooms], [t('area'), form.area ? `${form.area} m²` : ''], [t('listingType'), t(form.listingType === 'rent' ? 'forRent' : 'forSale')]]
+          : form.category === 'phones' || form.category === 'electronics'
+            ? [[t('brand'), form.brand], [t('model'), form.model], [t('storage'), form.storage], [t('warranty'), form.warranty]]
+            : form.category === 'furniture'
+              ? [[t('material'), form.material], [t('dimensions'), form.dimensions]]
+              : form.category === 'services'
+                ? [[t('serviceArea'), form.serviceArea], [t('availability'), form.availability]]
+                : []
       const highlights = [...attributeLines.filter(([, value]) => value).map(([label, value]) => `${label}: ${value}`), ...bulletLines].slice(0, 8)
       const payload = { ...form, price: Number(form.price), priority: Number(form.priority), image: imagesForListing[0], images: imagesForListing, attributes, highlights }
       if (editing) await updateAdminListing(editing.id, payload)
@@ -146,7 +162,7 @@ function AdminPage() {
         <div className="promotion-controls"><Field label={t('promotionTier')}><select name="promotionTier" value={form.promotionTier} onChange={update}><option value="standard">{t('tierStandard')}</option><option value="vip">{t('tierVip')}</option><option value="pro">{t('tierPro')}</option></select></Field><Field label={t('priority')}><input name="priority" value={form.priority} onChange={update} type="number" min="0" max="1000" /></Field><p>{t('promotionHelp')}</p></div>
         {form.category === 'cars' && <div className="attribute-panel"><p className="section-kicker">{t('vehicleDetails')}</p><div className="admin-form-grid"><Field label={t('listingType')}><select name="listingType" value={form.listingType || 'sale'} onChange={update}><option value="sale">{t('forSale')}</option><option value="rent">{t('forRent')}</option></select></Field><Field label={t('modelYear')}><input name="year" value={form.year || ''} onChange={update} type="number" min="1950" max="2030" /></Field><Field label={t('mileage')}><input name="mileage" value={form.mileage || ''} onChange={update} type="number" min="0" /></Field><Field label={t('transmission')}><select name="transmission" value={form.transmission || 'automatic'} onChange={update}><option value="automatic">{t('automatic')}</option><option value="manual">{t('manual')}</option></select></Field><Field label={t('fuel')}><select name="fuel" value={form.fuel || 'petrol'} onChange={update}><option value="petrol">{t('petrol')}</option><option value="diesel">{t('diesel')}</option><option value="hybrid">{t('hybrid')}</option><option value="electric">{t('electric')}</option></select></Field><Field label={t('bodyType')}><select name="bodyType" value={form.bodyType || 'SUV'} onChange={update}><option value="SUV">{t('suv')}</option><option value="Sedan">{t('sedan')}</option><option value="Hatchback">{t('hatchback')}</option><option value="Pickup">{t('pickup')}</option><option value="Minibus">{t('minibus')}</option><option value="Truck">{t('truck')}</option></select></Field></div></div>}
         {form.category === 'property' && <div className="attribute-panel"><p className="section-kicker">{t('propertyDetails')}</p><div className="admin-form-grid"><Field label={t('listingType')}><select name="listingType" value={form.listingType || 'sale'} onChange={update}><option value="sale">{t('forSale')}</option><option value="rent">{t('forRent')}</option></select></Field><Field label={t('propertyType')}><select name="propertyType" value={form.propertyType || 'apartment'} onChange={update}><option value="apartment">{t('apartment')}</option><option value="villa">{t('villa')}</option><option value="land">{t('land')}</option><option value="office">{t('office')}</option></select></Field><Field label={t('bedrooms')}><input name="bedrooms" value={form.bedrooms || ''} onChange={update} type="number" min="0" /></Field><Field label={t('bathrooms')}><input name="bathrooms" value={form.bathrooms || ''} onChange={update} type="number" min="0" /></Field><Field label={t('area')}><input name="area" value={form.area || ''} onChange={update} type="number" min="0" /></Field></div></div>}
-        <div className="admin-form-grid"><Field label={t('phone')}><input name="phone" value={form.phone} onChange={update} required placeholder="09__ ___ ____" /></Field><label className="upload-label">{t('productImages')}<span className="upload-box"><input type="file" accept="image/*" multiple onChange={handleImages} /><strong>+</strong><span>{t('uploadImages')}<small>{t('upToFive')}</small></span></span></label></div>{previews.length > 0 && <div className="upload-previews admin-previews">{previews.map((preview) => <img src={preview} alt={t('productImages')} key={preview} />)}</div>}
+        {(form.category === 'phones' || form.category === 'electronics' || form.category === 'furniture' || form.category === 'services') && <div className="attribute-panel"><p className="section-kicker">{t('productSpecifications')}</p><div className="admin-form-grid">{(form.category === 'phones' ? ['brand', 'model', 'storage', 'warranty'] : form.category === 'electronics' ? ['brand', 'model', 'warranty'] : form.category === 'furniture' ? ['material', 'dimensions'] : ['serviceArea', 'availability']).map((name) => <Field key={name} label={t(name)}><input name={name} value={form[name] || ''} onChange={update} /></Field>)}</div></div>}<div className="admin-form-grid"><Field label={t('phone')}><input name="phone" value={form.phone} onChange={update} required placeholder="09__ ___ ____" /></Field><label className="upload-label">{t('productImages')}<span className="upload-box"><input type="file" accept="image/*" multiple onChange={handleImages} /><strong>+</strong><span>{t('uploadImages')}<small>{t('upToFive')}</small></span></span></label></div>{previews.length > 0 && <div className="upload-previews admin-previews">{previews.map((preview) => <img src={preview} alt={t('productImages')} key={preview} />)}</div>}
         <button className="admin-submit" disabled={status === 'loading'} type="submit">{status === 'loading' ? t('publishing') : editing ? t('saveChanges') : t('publishFeatured')} <span>↗</span></button>
       </form><aside className="admin-side"><div className="admin-preview"><p className="section-kicker">{t('adminWorkflow')}</p><h2>{t('adminWorkflowTitle')}</h2><ol><li>{t('adminStepOne')}</li><li>{t('adminStepTwo')}</li><li>{t('adminStepThree')}</li></ol></div></aside></div>
     </main>{confirmDeleteId && <div className="toast-confirm-backdrop" role="presentation" onMouseDown={(event) => event.target === event.currentTarget && setConfirmDeleteId(null)}><section className="toast-confirm-dialog" role="alertdialog" aria-modal="true" aria-labelledby="confirm-delete-title"><h2 id="confirm-delete-title">{t('confirmDeleteTitle')}</h2><p>{t('confirmDeleteListing')}</p><div className="toast-confirm-actions"><button type="button" onClick={() => setConfirmDeleteId(null)}>{t('cancel')}</button><button className="delete-action" type="button" onClick={() => removeListing(confirmDeleteId)}>{t('delete')}</button></div></section></div>}<SiteFooter />{showScrollTop && <button className="admin-scroll-top" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} type="button" aria-label={t('scrollToTop')} title={t('scrollToTop')}><span aria-hidden="true">↑</span><span>{t('scrollToTop')}</span></button>}</div>
