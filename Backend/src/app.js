@@ -13,8 +13,17 @@ import path from 'node:path';
 
 export const app = express();
 
+const normalizeOrigin = (value) => {
+  try {
+    return new URL(value).origin;
+  } catch {
+    return value;
+  }
+};
+
 const allowedOrigins = new Set([
-  env.clientUrl,
+  normalizeOrigin(env.clientUrl),
+  'https://wende-delala.vercel.app',
   'http://localhost:5173',
   'http://127.0.0.1:5173',
 ]);
@@ -22,7 +31,7 @@ const allowedOrigins = new Set([
 app.use(helmet({ crossOriginResourcePolicy: { policy: 'cross-origin' } }));
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.has(origin)) return callback(null, true);
+    if (!origin || allowedOrigins.has(normalizeOrigin(origin))) return callback(null, true);
     return callback(new Error('Origin is not allowed by CORS'));
   },
   credentials: true,
