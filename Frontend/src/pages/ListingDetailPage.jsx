@@ -9,6 +9,7 @@ import { formatListingTime, getListingType } from '../data/listingType'
 import { CONTACT_PHONE } from '../data/contact'
 import AccountActions from '../components/AccountActions'
 import SiteFooter from '../components/SiteFooter'
+import Seo from '../components/Seo'
 import { useFavorites } from '../favorites/FavoritesContext'
 import '../App.css'
 
@@ -38,6 +39,7 @@ function ListingDetailPage() {
 
   return (
     <div className="marketplace-shell detail-page">
+      <Seo page="listing" listing={listing} />
       <header className="site-header"><div className="header-inner"><Link className="brand" to="/" aria-label={t('brand')}><span className="brand-mark">ደ</span><span><strong>ደላላ</strong><small>DE LALA</small></span></Link><nav className="desktop-nav" aria-label={t('primaryNav')}><Link className="nav-link active" to="/listings">{t('browse')}</Link><Link className="nav-link" to="/favorites">{t('saved')}</Link><Link className="nav-link" to="/#how-it-works">{t('howItWorks')}</Link></nav><div className="header-actions"><button className="language-button" onClick={() => i18n.changeLanguage(i18n.language === 'am' ? 'en' : 'am')} type="button">{i18n.language === 'am' ? 'አማ | EN' : 'EN | አማ'}</button><AccountActions /></div></div></header>
       <main className="detail-main">
         <Link className="back-link" to="/listings">← {t('backToListings')}</Link>

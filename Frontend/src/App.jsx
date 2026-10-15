@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 import { fetchListings } from './api/listings'
 import AccountActions from './components/AccountActions'
 import SiteFooter from './components/SiteFooter'
+import Seo from './components/Seo'
 import { useFavorites } from './favorites/FavoritesContext'
 import { requireAuthenticatedSession } from './auth/session'
 import { formatListingTime, getListingType } from './data/listingType'
@@ -137,6 +138,7 @@ function App() {
 
   return (
     <div className="marketplace-shell">
+      <Seo page="home" />
       <header className="site-header">
         <div className="header-inner">
           <a className="brand" href="#top" aria-label={t('brand') }>

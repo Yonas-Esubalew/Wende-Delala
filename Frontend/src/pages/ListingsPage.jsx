@@ -8,6 +8,7 @@ import { formatListingTime, getListingType } from '../data/listingType'
 import { CONTACT_PHONE } from '../data/contact'
 import AccountActions from '../components/AccountActions'
 import SiteFooter from '../components/SiteFooter'
+import Seo from '../components/Seo'
 import { useFavorites } from '../favorites/FavoritesContext'
 import '../App.css'
 
@@ -57,6 +58,7 @@ function ListingsPage() {
 
   return (
     <div className="marketplace-shell listings-page">
+      <Seo page="listings" />
       <header className="site-header">
         <div className="header-inner">
           <Link className="brand" to="/" aria-label={t('brand')}><span className="brand-mark">ደ</span><span><strong>ደላላ</strong><small>DE LALA</small></span></Link>
